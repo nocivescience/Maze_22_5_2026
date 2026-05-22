@@ -8,3 +8,8 @@ edition = "2024"
 [[bin]]
 name = "Maze_22_5_2026"
 path = "main.rs"
+
+
+[[bin]]
+name = "p1"
+path = "p1.rs"
