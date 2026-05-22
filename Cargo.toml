@@ -1,0 +1,10 @@
+[package]
+name = "Maze_22_5_2026"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[[bin]]
+name = "Maze_22_5_2026"
+path = "main.rs"
