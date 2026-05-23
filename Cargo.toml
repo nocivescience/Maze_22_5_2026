@@ -22,3 +22,7 @@ path = "ref.rs"
 [[bin]]
 name= "p2"
 path = "p2.rs"
+
+[[bin]]
+name = "p3"
+path = "p3.rs"
