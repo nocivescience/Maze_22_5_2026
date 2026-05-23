@@ -28,11 +28,10 @@ fn mostrar_laberinto(laberinto: &Vec<Vec<i32>>) {
 fn main() {
     println!("Este es el mejor programa hecho con Rust");
     let mut laberinto = vec![vec![0; ANCHO]; ALTO];
-    for fila in laberinto {
-        println!("{:?}", fila)
-    };
+    
     generar_laberinto(1,1, &mut laberinto);
     generar_laberinto(1,2, &mut laberinto);
     generar_laberinto(1,3, &mut laberinto);
-    
+
+    mostrar_laberinto(&laberinto);
 }

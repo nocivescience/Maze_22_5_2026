@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+rand= "0.8"
 
 [[bin]]
 name = "Maze_22_5_2026"
@@ -13,3 +14,11 @@ path = "main.rs"
 [[bin]]
 name = "p1"
 path = "p1.rs"
+
+[[bin]]
+name = "ref"
+path = "ref.rs"
+
+[[bin]]
+name= "p2"
+path = "p2.rs"

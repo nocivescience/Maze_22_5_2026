@@ -1,0 +1,76 @@
+use rand::seq::SliceRandom; // Para poder usar .shuffle() en vectores
+use std::thread;
+use std::time::Duration;
+
+const ALTO: usize = 21;
+const ANCHO: usize = 21;
+
+// Agrupamos dx y dy en una sola estructura limpia
+const DIRECCIONES: [(isize, isize); 4] = [
+    (0, -2), // Arriba
+    (0, 2),  // Abajo
+    (-2, 0), // Izquierda
+    (2, 0),  // Derecha
+];
+
+fn mostrar_laberinto(laberinto: &[Vec<i32>]) {
+    // Código de escape ANSI para limpiar pantalla y mover el cursor arriba a la izquierda
+    // Es muchísimo más rápido que invocar un comando del sistema
+    print!("\x1B[2J\x1B[1;1H");
+
+    for i in 0..ALTO {
+        for j in 0..ANCHO {
+            if laberinto[i][j] == 1 {
+                print!("  ");
+            } else {
+                print!("jj");
+            }
+        }
+        println!();
+    }
+}
+
+fn generar_laberinto(x: usize, y: usize, laberinto: &mut Vec<Vec<i32>>) {
+    laberinto[y][x] = 1;
+
+    // Mostrar el progreso y pausar 50 milisegundos
+    mostrar_laberinto(laberinto);
+    thread::sleep(Duration::from_millis(50));
+
+    // Índices de nuestras direcciones (0: Arriba, 1: Abajo, 2: Izquierda, 3: Derecha)
+    let mut dirs = vec![0, 1, 2, 3];
+    
+    // Creamos el generador de números aleatorios local y mezclamos el vector
+    let mut rng = rand::thread_rng();
+    dirs.shuffle(&mut rng);
+
+    for i in dirs {
+        let (dx, dy) = DIRECCIONES[i];
+
+        // Usamos operaciones con enteros seguros (isize) para calcular las nuevas coordenadas
+        let nx = x as isize + dx;
+        let ny = y as isize + dy;
+
+        // Validamos los límites usando el truco de Rust de comparar con isize de forma segura
+        if nx > 0 && nx < (ANCHO - 1) as isize && ny > 0 && ny < (ALTO - 1) as isize {
+            let nx_u = nx as usize;
+            let ny_u = ny as usize;
+
+            if laberinto[ny_u][nx_u] == 0 {
+                // Rompemos el muro intermedio. 
+                // Al dividir un isize por 2, Rust trunca hacia cero de forma idéntica a C++
+                let muro_x = (x as isize + dx / 2) as usize;
+                let muro_y = (y as isize + dy / 2) as usize;
+                laberinto[muro_y][muro_x] = 1;
+
+                // Llamada recursiva
+                generar_laberinto(nx_u, ny_u, laberinto);
+            }
+        }
+    }
+}
+
+fn main() {
+    let mut laberinto = vec![vec![0; ANCHO]; ALTO];
+    generar_laberinto(1, 1, &mut laberinto);
+}
