@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+colored = "3.1.1"
 rand= "0.8"
 
 [[bin]]
@@ -12,17 +13,25 @@ path = "main.rs"
 
 
 [[bin]]
-name = "p1"
-path = "p1.rs"
+name = "maze_lento_y_extranio"
+path = "maze_lento_y_extranio.rs"
 
 [[bin]]
 name = "ref"
 path = "ref.rs"
 
 [[bin]]
-name= "p2"
-path = "p2.rs"
+name= "maze_con_colores"
+path = "maze_con_colores.rs"
 
 [[bin]]
 name = "p3"
 path = "p3.rs"
+
+[[bin]]
+name = "p4"
+path = "p4.rs"
+
+[[bin]]
+name = "main"
+path = "main.rs"

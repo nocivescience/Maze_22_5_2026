@@ -23,7 +23,7 @@ fn mostrar_laberinto(laberinto: &[Vec<i32>]) {
             }
         }
         println!();
-    }laberinto
+    }
 }
 
 fn generar_laberinto(x: usize, y: usize, laberinto: &mut Vec<Vec<i32>>) {

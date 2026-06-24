@@ -74,3 +74,77 @@ fn main() {
     let mut laberinto = vec![vec![0; ANCHO]; ALTO];
     generar_laberinto(1, 1, &mut laberinto);
 }
+
+
+
+
+--------------------------------------------------------------
+
+use rand::seq::SliceRandom; // Permite mezclar las direcciones aleatoriamente
+
+const ALTO : usize = 21;
+const ANCHO : usize = 21;
+
+// Tus direcciones con pasos de 2 unidades
+const DIRECCIONES : [(isize, isize); 4] = [
+    (0, -2), // Izquierda
+    (0, 2),  // Derecha
+    (-2, 0), // Arriba
+    (2, 0),  // Abajo
+];
+
+fn generar_laberinto(x: usize, y: usize, laberinto: &mut Vec<Vec<i32>>) {
+    // 1 representa camino (vacío), 0 representa pared
+    laberinto[x][y] = 1;
+
+    // Clonamos las direcciones y las mezclamos para que el laberinto sea aleatorio
+    let mut rng = rand::thread_rng();
+    let mut dirs_aleatorias = DIRECCIONES;
+    dirs_aleatorias.shuffle(&mut rng);
+
+    for (dx, dy) in dirs_aleatorias.iter() {
+        // Calculamos la posición de la celda vecina (a 2 de distancia)
+        let nuevo_x = x as isize + dx;
+        let nuevo_y = y as isize + dy;
+
+        // Verificamos que esté dentro de los límites del laberinto
+        if nuevo_x > 0 && nuevo_x < (ALTO - 1) as isize && nuevo_y > 0 && nuevo_y < (ANCHO - 1) as isize {
+            let nx = nuevo_x as usize;
+            let ny = nuevo_y as usize;
+
+            // Si la celda vecina aún es pared (0), la visitamos
+            if laberinto[nx][ny] == 0 {
+                // Rompemos la pared intermedia que dejamos atrás
+                let pared_x = (x as isize + dx / 2) as usize;
+                let pared_y = (y as isize + dy / 2) as usize;
+                laberinto[pared_x][pared_y] = 1;
+
+                // Llamada recursiva para seguir explorando desde la nueva celda
+                generar_laberinto(nx, ny, laberinto);
+            }
+        }
+    }
+}
+
+fn mostrar_laberinto(laberinto: &Vec<Vec<i32>>) {
+    for i in 0..ALTO {
+        for j in 0..ANCHO {
+            if laberinto[i][j] == 1 {
+                print!("  "); // Dos espacios para que sea más cuadrado en la terminal
+            } else {
+                print!("██"); // Carácter bloque para las paredes
+            }
+        }
+        println!();
+    }
+}
+
+fn main() {
+    println!("Este es el mejor programa hecho con Rust");
+    let mut laberinto = vec![vec![0; ANCHO]; ALTO];
+    
+    // Empezamos la generación en un punto impar para mantener los bordes
+    generar_laberinto(1, 1, &mut laberinto);
+
+    mostrar_laberinto(&laberinto);
+}
